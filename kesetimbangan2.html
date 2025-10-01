@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Interaktif: Kesetimbangan Kimia</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: white;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab:hover {
+            background-color: var(--light-color);
+        }
+        
+        .tab.active {
+            background-color: white;
+            border-bottom: 3px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .content-section {
+            display: none;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .example-box {
+            background-color: var(--light-color);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .formula {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        
+        .interactive-box {
+            background-color: #e8f4fc;
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .simulation-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2rem 0;
+        }
+        
+        .reaction-visualization {
+            width: 100%;
+            height: 200px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .molecule {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: all 1s ease;
+        }
+        
+        .reactant {
+            background-color: var(--accent-color);
+        }
+        
+        .product {
+            background-color: var(--secondary-color);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--dark-color);
+            color: white;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kesetimbangan Kimia</h1>
+        <p class="subtitle">Media Pembelajaran Interaktif</p>
+    </header>
+    
+    <div class="container">
+        <div class="nav-tabs">
+            <div class="tab active" data-target="pendahuluan">Pendahuluan</div>
+            <div class="tab" data-target="reaksi-kesetimbangan">Reaksi Kesetimbangan</div>
+            <div class="tab" data-target="konstanta-kesetimbangan">Konstanta Kesetimbangan</div>
+            <div class="tab" data-target="faktor-pergeseran">Faktor Pergeseran</div>
+            <div class="tab" data-target="penerapan">Penerapan Industri</div>
+            <div class="tab" data-target="simulasi">Simulasi Interaktif</div>
+        </div>
+        
+        <!-- Section: Pendahuluan -->
+        <section id="pendahuluan" class="content-section active">
+            <h2>A. Pendahuluan</h2>
+            <p>Dalam kimia, terdapat dua jenis reaksi berdasarkan arah berlangsungnya:</p>
+            
+            <h3>1. Reaksi Satu Arah (Irreversible)</h3>
+            <p>Reaksi yang terjadi hanya pada satu arah, dan produknya tidak dapat kembali menjadi reaktan.</p>
+
+		<div class="example-box">
+                <p><strong>Contoh:</strong> Pembakaran Sempurna Metana</p>
+                <div class="formula">CH₄​(g)+2O₂​(g)→CO₂​(g)+2H₂​O(g)</div>
+            </div>
+            
+            <h3>2. Reaksi Bolak-Balik (Reversible)</h3>
+            <p>Reaksi yang terjadi pada dua arah yang berlawanan dalam waktu bersamaan. Produk dapat berubah menjadi reaktan, dan reaktan dapat berubah menjadi produk.</p>
+            
+            <div class="example-box">
+                <p><strong>Contoh:</strong> Perubahan air menjadi uap air</p>
+                <div class="formula">H₂O(l) ⇌ H₂O(g)</div>
+            </div>
+            
+            <h3>Ciri-ciri Reaksi Setimbang:</h3>
+            <ul>
+                <li>Reaksi bolak-balik terjadi dalam sistem tertutup</li>
+                <li>Konsentrasi seluruh zat nilainya tetap</li>
+                <li>Laju reaksi maju (v₁) sama dengan laju reaksi balik (v₂)</li>
+            </ul>
+            
+            <h3>Jenis Kesetimbangan Kimia:</h3>
+            <ol>
+                <li><strong>Kesetimbangan Homogen</strong> (satu wujud/fase)
+                    <div class="formula">N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</div>
+                    <div class="formula">CH₃COOH(aq) ⇌ CH₃COO⁻(aq) + H⁺(aq)</div>
+                </li>
+                <li><strong>Kesetimbangan Heterogen</strong> (lebih dari satu fase)
+                    <div class="formula">CaCO₃(s) ⇌ CaO(s) + CO₂(g)</div>
+                    <div class="formula">Ag₂CrO₄(s) ⇌ 2Ag⁺(aq) + CrO₄²⁻(aq)</div>
+                </li>
+            </ol>
+        </section>
+        
+        <!-- Section: Reaksi Kesetimbangan -->
+        <section id="reaksi-kesetimbangan" class="content-section">
+            <h2>B. Reaksi Kesetimbangan</h2>
+            
+            <h3>Kesetimbangan Disosiasi</h3>
+            <p>Reaksi kesetimbangan yang menguraikan suatu zat menjadi zat lain, dan reaksi baliknya adalah kesetimbangan asosiasi/pembentukan.</p>
+            
+            <h3>Derajat Disosiasi (α)</h3>
+            <p>Perbandingan jumlah mol terdisosiasi (bereaksi) dengan jumlah mol zat sebelum terdisosiasi (mula-mula).</p>
+            
+            <div class="formula">α = jumlah zat terdisosiasi / jumlah zat awal</div>
+            
+            <p>Nilai α berkisar antara 0 ≤ α ≤ 1:</p>
+            <ul>
+                <li>α = 0: tidak ada penguraian</li>
+                <li>α = 1: zat terurai seluruhnya</li>
+                <li>0 < α < 1: zat terurai sebagian (setimbang)</li>
+            </ul>
+            
+            <div class="example-box">
+                <p><strong>Contoh Soal:</strong> Dalam reaksi kesetimbangan disosiasi N₂O₄ menjadi NO₂, perbandingan mol N₂O₄ dengan NO₂ dalam keadaan setimbang berturut-turut 3 : 2. Berapakah derajat disosiasi N₂O₄?</p>
+                <p><strong>Jawab:</strong></p>
+                <div class="formula">N₂O₄(g) ⇌ 2NO₂(g)</div>
+                <p>Mula-mula: 4x mol N₂O₄</p>
+                <p>Reaksi: x mol N₂O₄ terurai menjadi 2x mol NO₂</p>
+                <p>Setimbang: 3x mol N₂O₄ dan 2x mol NO₂</p>
+                <div class="formula">α = x / 4x = 1/4 = 0,25</div>
+            </div>
+        </section>
+        
+        <!-- Section: Konstanta Kesetimbangan -->
+        <section id="konstanta-kesetimbangan" class="content-section">
+            <h2>C. Konstanta Kesetimbangan</h2>
+            
+            <h3>Hukum Kesetimbangan (Guldberg dan Waage)</h3>
+            <p>Hasil kali konsentrasi zat-zat di sebelah kanan yang dipangkatkan dengan koefisiennya, dibagi dengan hasil kali konsentrasi zat-zat di sebelah kiri yang dipangkatkan dengan koefisiennya memiliki harga tertentu pada suhu tetap.</p>
+            
+            <div class="formula">wA + xB ⇌ yC + zD</div>
+            <div class="formula">Kc = [C]ʸ [D]ᶻ / [A]ʷ [B]ˣ</div>
+            
+            <h3>Jenis Konstanta Kesetimbangan:</h3>
+            <ol>
+                <li><strong>Konstanta Konsentrasi (Kc)</strong> - dipengaruhi konsentrasi zat berwujud larutan dan gas</li>
+                <li><strong>Konstanta Tekanan (Kp)</strong> - dipengaruhi tekanan zat-zat berwujud gas</li>
+            </ol>
+            
+            <div class="example-box">
+                <p><strong>Contoh Kc:</strong></p>
+                <div class="formula">BaSO₄(s) ⇌ Ba²⁺(aq) + SO₄²⁻(aq)</div>
+                <div class="formula">Kc = [Ba²⁺][SO₄²⁻] / [BaSO₄]⁰ = [Ba²⁺][SO₄²⁻]</div>
+                
+                <p><strong>Contoh Kp:</strong></p>
+                <div class="formula">2SO₂(g) + O₂(g) ⇌ 2SO₃(g)</div>
+                <div class="formula">Kp = (P<sub>SO₃</sub>)² / (P<sub>SO₂</sub>)² (P<sub>O₂</sub>)</div>
+            </div>
+            
+            <h3>Hubungan Kc dan Kp</h3>
+            <div class="formula">Kp = Kc (RT)<sup>Δn</sup></div>
+            <p>dimana:</p>
+            <ul>
+                <li>R = tetapan gas ideal (0,082 L.atm/mol.K)</li>
+                <li>T = suhu (K)</li>
+                <li>Δn = selisih jumlah koefisien zat di kanan dengan jumlah koefisien zat di kiri</li>
+            </ul>
+            
+            <div class="interactive-box">
+                <h3>Kalkulator Kc dan Kp</h3>
+                <p>Masukkan nilai untuk menghitung hubungan antara Kc dan Kp:</p>
+                <div>
+                    <label for="kc-input">Kc:</label>
+                    <input type="number" id="kc-input" step="0.001" value="0.25">
+                </div>
+                <div>
+                    <label for="temperature-input">Suhu (°C):</label>
+                    <input type="number" id="temperature-input" value="17">
+                </div>
+                <div>
+                    <label for="delta-n-input">Δn:</label>
+                    <input type="number" id="delta-n-input" value="-1">
+                </div>
+                <button id="calculate-kp" class="btn">Hitung Kp</button>
+                <div id="kp-result" style="margin-top: 1rem; font-weight: bold;"></div>
+            </div>
+        </section>
+        
+        <!-- Section: Faktor Pergeseran -->
+        <section id="faktor-pergeseran" class="content-section">
+            <h2>D. Faktor-faktor yang Mempengaruhi Pergeseran Kesetimbangan</h2>
+            
+            <p>Berdasarkan <strong>Azas Le Chatelier</strong>: "Bila suatu kesetimbangan diberikan suatu aksi/tindakan, maka sistem tersebut akan mengadakan reaksi yang cenderung mengurangi aksi tersebut."</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Faktor</th>
+                        <th>Jika Diperbesar</th>
+                        <th>Jika Diperkecil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Konsentrasi</td>
+                        <td>Bergerak ke arah lawan (kanan)</td>
+                        <td>Bergerak ke diri sendiri (kiri)</td>
+                    </tr>
+                    <tr>
+                        <td>Tekanan/Volume (gas)</td>
+                        <td>Bergerak ke arah koefisien lebih kecil</td>
+                        <td>Bergerak ke arah koefisien lebih besar</td>
+                    </tr>
+                    <tr>
+                        <td>Suhu</td>
+                        <td>Bergerak ke arah reaksi endoterm</td>
+                        <td>Bergerak ke arah reaksi eksoterm</td>
+                    </tr>
+                    <tr>
+                        <td>Katalis</td>
+                        <td colspan="2">Mempercepat tercapainya kesetimbangan, tetapi tidak menggeser kesetimbangan</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="interactive-box">
+                <h3>Simulator Pergeseran Kesetimbangan</h3>
+                <p>Pilih reaksi dan ubah faktor untuk melihat pengaruhnya:</p>
+                
+                <div>
+                    <label for="reaction-select">Pilih Reaksi:</label>
+                    <select id="reaction-select">
+                        <option value="1">N₂(g) + 3H₂(g) ⇌ 2NH₃(g) (ΔH = -92,4 kJ)</option>
+                        <option value="2">2SO₂(g) + O₂(g) ⇌ 2SO₃(g) (ΔH = -197 kJ)</option>
+                        <option value="3">H₂(g) + I₂(g) ⇌ 2HI(g) (ΔH = +53 kJ)</option>
+                    </select>
+                </div>
+                
+                <div class="controls">
+                    <button id="increase-concentration" class="btn">Tambah Konsentrasi Reaktan</button>
+                    <button id="decrease-concentration" class="btn">Kurangi Konsentrasi Reaktan</button>
+                    <button id="increase-pressure" class="btn">Tambah Tekanan</button>
+                    <button id="decrease-pressure" class="btn">Kurangi Tekanan</button>
+                    <button id="increase-temperature" class="btn">Tambah Suhu</button>
+                    <button id="decrease-temperature" class="btn">Kurangi Suhu</button>
+                </div>
+                
+                <div id="shift-result" style="margin-top: 1rem; padding: 1rem; background-color: #e8f4fc; border-radius: 4px;"></div>
+            </div>
+        </section>
+        
+        <!-- Section: Penerapan Industri -->
+        <section id="penerapan" class="content-section">
+            <h2>E. Penerapan Kesetimbangan Kimia dalam Industri</h2>
+            
+            <h3>1. Proses Haber-Bosch (Pembuatan Amonia)</h3>
+            <div class="formula">N₂(g) + 3H₂(g) ⇌ 2NH₃(g) (ΔH = -92,4 kJ)</div>
+            
+            <p><strong>Kondisi optimum:</strong></p>
+            <ul>
+                <li>Katalis: Serbuk Fe</li>
+                <li>Suhu: Tinggi (meskipun seharusnya rendah untuk pergeseran ke kanan, tetapi katalis hanya bekerja pada suhu tinggi)</li>
+                <li>Tekanan: Tinggi (untuk menggeser kesetimbangan ke kanan)</li>
+                <li>Amonia yang terbentuk segera dipisahkan untuk mengurangi reaksi balik</li>
+            </ul>
+            
+            <h3>2. Proses Kontak (Pembuatan Asam Sulfat)</h3>
+            <p><strong>Tahapan:</strong></p>
+            <ol>
+                <li>Pembakaran belerang: S(s) + O₂(g) → SO₂(g)</li>
+                <li>Oksidasi belerang dioksida: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g) (ΔH = -197 kJ)</li>
+                <li>Pelarutan SO₃ dalam H₂SO₄ pekat: SO₃(s) + H₂SO₄(aq) → H₂S₂O₇(l)</li>
+                <li>Reaksi dengan air: H₂S₂O₇(l) + H₂O(l) → 2H₂SO₄(aq)</li>
+            </ol>
+            
+            <p><strong>Kondisi optimum tahap kedua:</strong></p>
+            <ul>
+                <li>Suhu: ±500°C (tinggi untuk mengaktifkan katalis)</li>
+                <li>Tekanan: Normal (1 atm)</li>
+                <li>Katalis: V₂O₅</li>
+            </ul>
+        </section>
+        
+        <!-- Section: Simulasi Interaktif -->
+        <section id="simulasi" class="content-section">
+            <h2>F. Simulasi Interaktif Kesetimbangan Kimia</h2>
+            
+            <div class="simulation-container">
+                <h3>Simulasi Reaksi: N₂(g) + 3H₂(g) ⇌ 2NH₃(g)</h3>
+                
+                <div class="reaction-visualization" id="reaction-viz">
+                    <!-- Molekul akan ditambahkan secara dinamis melalui JavaScript -->
+                </div>
+                
+                <div class="controls">
+                    <button id="start-reaction" class="btn">Mulai Reaksi</button>
+                    <button id="reset-reaction" class="btn">Reset</button>
+                    <button id="add-reactant" class="btn">Tambah Reaktan</button>
+                    <button id="add-catalyst" class="btn">Tambah Katalis</button>
+                </div>
+                
+                <div style="margin-top: 1rem; width: 100%;">
+                    <h4>Data Kesetimbangan:</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Zat</th>
+                                <th>Konsentrasi Awal (M)</th>
+                                <th>Konsentrasi Setimbang (M)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>N₂</td>
+                                <td id="n2-initial">1.0</td>
+                                <td id="n2-equilibrium">-</td>
+                            </tr>
+                            <tr>
+                                <td>H₂</td>
+                                <td id="h2-initial">3.0</td>
+                                <td id="h2-equilibrium">-</td>
+                            </tr>
+                            <tr>
+                                <td>NH₃</td>
+                                <td id="nh3-initial">0.0</td>
+                                <td id="nh3-equilibrium">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top: 1rem;">
+                        <p><strong>Nilai Kc:</strong> <span id="kc-value">-</span></p>
+                        <p><strong>Status:</strong> <span id="reaction-status">Belum dimulai</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Media Pembelajaran Interaktif Kesetimbangan Kimia</p>
+        <p>© 2023 - Dibuat untuk tujuan edukasi</p>
+    </footer>
+
+    <script>
+        // Tab Navigation
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and sections
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding section
+                tab.classList.add('active');
+                const targetId = tab.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+        
+        // Kalkulator Kc dan Kp
+        document.getElementById('calculate-kp').addEventListener('click', () => {
+            const kc = parseFloat(document.getElementById('kc-input').value);
+            const temperature = parseFloat(document.getElementById('temperature-input').value);
+            const deltaN = parseFloat(document.getElementById('delta-n-input').value);
+            
+            const R = 0.082; // L.atm/mol.K
+            const T = temperature + 273; // Convert to Kelvin
+            
+            const kp = kc * Math.pow(R * T, deltaN);
+            
+            document.getElementById('kp-result').textContent = `Kp = ${kp.toExponential(3)}`;
+        });
+        
+        // Simulator Pergeseran Kesetimbangan
+        const reactionSelect = document.getElementById('reaction-select');
+        const shiftResult = document.getElementById('shift-result');
+        
+        document.getElementById('increase-concentration').addEventListener('click', () => {
+            const reaction = reactionSelect.options[reactionSelect.selectedIndex].text;
+            shiftResult.innerHTML = `<p>Ketika konsentrasi reaktan ditambah, kesetimbangan bergeser ke <strong>kanan</strong> (menghasilkan lebih banyak produk) untuk mengurangi penambahan reaktan.</p>`;
+        });
+        
+        document.getElementById('decrease-concentration').addEventListener('click', () => {
+            const reaction = reactionSelect.options[reactionSelect.selectedIndex].text;
+            shiftResult.innerHTML = `<p>Ketika konsentrasi reaktan dikurangi, kesetimbangan bergeser ke <strong>kiri</strong> (menghasilkan lebih banyak reaktan) untuk mengkompensasi pengurangan.</p>`;
+        });
+        
+        document.getElementById('increase-pressure').addEventListener('click', () => {
+            const reaction = reactionSelect.options[reactionSelect.selectedIndex].text;
+            shiftResult.innerHTML = `<p>Ketika tekanan diperbesar, kesetimbangan bergeser ke arah dengan <strong>jumlah koefisien lebih kecil</strong> untuk mengurangi tekanan.</p>`;
+        });
+        
+        document.getElementById('decrease-pressure').addEventListener('click', () => {
+            const reaction = reactionSelect.options[reactionSelect.selectedIndex].text;
+            shiftResult.innerHTML = `<p>Ketika tekanan diperkecil, kesetimbangan bergeser ke arah dengan <strong>jumlah koefisien lebih besar</strong> untuk meningkatkan tekanan.</p>`;
+        });
+        
+        document.getElementById('increase-temperature').addEventListener('click', () => {
+            const reaction = reactionSelect.options[reactionSelect.selectedIndex].text;
+            const isExothermic = reaction.includes('ΔH = -');
+            if (isExothermic) {
+                shiftResult.innerHTML = `<p>Ketika suhu dinaikkan, kesetimbangan bergeser ke <strong>kiri</strong> (reaksi endoterm) untuk menyerap kalor dan menurunkan suhu.</p>`;
+            } else {
+                shiftResult.innerHTML = `<p>Ketika suhu dinaikkan, kesetimbangan bergeser ke <strong>kanan</strong> (reaksi endoterm) untuk menyerap kalor dan menurunkan suhu.</p>`;
+            }
+        });
+        
+        document.getElementById('decrease-temperature').addEventListener('click', () => {
+            const reaction = reactionSelect.options[reactionSelect.selectedIndex].text;
+            const isExothermic = reaction.includes('ΔH = -');
+            if (isExothermic) {
+                shiftResult.innerHTML = `<p>Ketika suhu diturunkan, kesetimbangan bergeser ke <strong>kanan</strong> (reaksi eksoterm) untuk melepas kalor dan menaikkan suhu.</p>`;
+            } else {
+                shiftResult.innerHTML = `<p>Ketika suhu diturunkan, kesetimbangan bergeser ke <strong>kiri</strong> (reaksi eksoterm) untuk melepas kalor dan menaikkan suhu.</p>`;
+            }
+        });
+        
+        // Simulasi Reaksi Kesetimbangan
+        const reactionViz = document.getElementById('reaction-viz');
+        let reactionInterval;
+        let equilibriumReached = false;
+        
+        document.getElementById('start-reaction').addEventListener('click', startReactionSimulation);
+        document.getElementById('reset-reaction').addEventListener('click', resetReactionSimulation);
+        document.getElementById('add-reactant').addEventListener('click', addReactant);
+        document.getElementById('add-catalyst').addEventListener('click', addCatalyst);
+        
+        function startReactionSimulation() {
+            if (reactionInterval) clearInterval(reactionInterval);
+            
+            document.getElementById('reaction-status').textContent = 'Reaksi berlangsung...';
+            equilibriumReached = false;
+            
+            // Reset visualization
+            reactionViz.innerHTML = '';
+            
+            // Add initial molecules
+            addMolecules('N₂', 5, 'reactant');
+            addMolecules('H₂', 15, 'reactant');
+            
+            let n2Count = 5;
+            let h2Count = 15;
+            let nh3Count = 0;
+            let step = 0;
+            
+            reactionInterval = setInterval(() => {
+                step++;
+                
+                // Forward reaction: N₂ + 3H₂ → 2NH₃
+                if (n2Count >= 1 && h2Count >= 3 && Math.random() > 0.5) {
+                    n2Count--;
+                    h2Count -= 3;
+                    nh3Count += 2;
+                    
+                    // Remove one N₂ and three H₂ molecules
+                    removeMolecule('N₂');
+                    for (let i = 0; i < 3; i++) removeMolecule('H₂');
+                    
+                    // Add two NH₃ molecules
+                    addMolecules('NH₃', 2, 'product');
+                }
+                
+                // Reverse reaction: 2NH₃ → N₂ + 3H₂
+                if (nh3Count >= 2 && Math.random() > 0.7) {
+                    nh3Count -= 2;
+                    n2Count++;
+                    h2Count += 3;
+                    
+                    // Remove two NH₃ molecules
+                    for (let i = 0; i < 2; i++) removeMolecule('NH₃');
+                    
+                    // Add one N₂ and three H₂ molecules
+                    addMolecules('N₂', 1, 'reactant');
+                    addMolecules('H₂', 3, 'reactant');
+                }
+                
+                // Update data table
+                document.getElementById('n2-equilibrium').textContent = (n2Count / 5).toFixed(2);
+                document.getElementById('h2-equilibrium').textContent = (h2Count / 5).toFixed(2);
+                document.getElementById('nh3-equilibrium').textContent = (nh3Count / 5).toFixed(2);
+                
+                // Calculate Kc
+                const kc = (Math.pow(nh3Count/5, 2)) / ((n2Count/5) * Math.pow(h2Count/5, 3));
+                document.getElementById('kc-value').textContent = kc.toFixed(4);
+                
+                // Check if equilibrium is reached (after some steps)
+                if (step > 50 && !equilibriumReached) {
+                    document.getElementById('reaction-status').textContent = 'KESETIMBANGAN TERCAPAI';
+                    equilibriumReached = true;
+                    // clearInterval(reactionInterval);
+                }
+            }, 500);
+        }
+        
+        function resetReactionSimulation() {
+            if (reactionInterval) clearInterval(reactionInterval);
+            reactionViz.innerHTML = '';
+            document.getElementById('n2-equilibrium').textContent = '-';
+            document.getElementById('h2-equilibrium').textContent = '-';
+            document.getElementById('nh3-equilibrium').textContent = '-';
+            document.getElementById('kc-value').textContent = '-';
+            document.getElementById('reaction-status').textContent = 'Belum dimulai';
+            equilibriumReached = false;
+        }
+        
+        function addReactant() {
+            addMolecules('N₂', 2, 'reactant');
+            addMolecules('H₂', 6, 'reactant');
+            
+            // Update initial concentrations
+            const n2Initial = document.getElementById('n2-initial');
+            n2Initial.textContent = (parseFloat(n2Initial.textContent) + 0.4).toFixed(1);
+            
+            const h2Initial = document.getElementById('h2-initial');
+            h2Initial.textContent = (parseFloat(h2Initial.textContent) + 1.2).toFixed(1);
+        }
+        
+        function addCatalyst() {
+            if (reactionInterval) {
+                document.getElementById('reaction-status').textContent = 'Katalis ditambahkan - kesetimbangan tercapai lebih cepat!';
+                
+                // Speed up the reaction
+                clearInterval(reactionInterval);
+                reactionInterval = setInterval(() => {
+                    // Same reaction logic but faster
+                    if (Math.random() > 0.3) {
+                        // Simulate forward reaction
+                        if (document.querySelectorAll('.molecule.reactant').length >= 4) {
+                            removeMolecule('N₂');
+                            for (let i = 0; i < 3; i++) removeMolecule('H₂');
+                            addMolecules('NH₃', 2, 'product');
+                        }
+                    }
+                    
+                    if (Math.random() > 0.5) {
+                        // Simulate reverse reaction
+                        if (document.querySelectorAll('.molecule.product').length >= 2) {
+                            for (let i = 0; i < 2; i++) removeMolecule('NH₃');
+                            addMolecules('N₂', 1, 'reactant');
+                            addMolecules('H₂', 3, 'reactant');
+                        }
+                    }
+                }, 200);
+            }
+        }
+        
+        function addMolecules(type, count, className) {
+            for (let i = 0; i < count; i++) {
+                const molecule = document.createElement('div');
+                molecule.className = `molecule ${className}`;
+                molecule.textContent = type;
+                molecule.style.left = `${Math.random() * 80 + 10}%`;
+                molecule.style.top = `${Math.random() * 80 + 10}%`;
+                molecule.setAttribute('data-type', type);
+                reactionViz.appendChild(molecule);
+            }
+        }
+        
+        function removeMolecule(type) {
+            const molecules = document.querySelectorAll(`.molecule[data-type="${type}"]`);
+            if (molecules.length > 0) {
+                const randomIndex = Math.floor(Math.random() * molecules.length);
+                molecules[randomIndex].remove();
+            }
+        }
+    </script>
+</body>
+</html>
